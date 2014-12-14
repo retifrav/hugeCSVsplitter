@@ -1,8 +1,100 @@
 ﻿<Window x:Class="hugeCSVsplitter.HelpWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Help" Height="335" Width="569">
-    <Grid>
-
+        Title="About hugeCSVsplitter" Height="372" Width="526" ResizeMode="NoResize">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="80"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalAlignment="Right">
+            <Image Source="reses/info.png"/>
+        </Label>
+        <Label Grid.Row="0" Grid.Column="0" Content="Version:" FontWeight="Bold" HorizontalAlignment="Right"/>
+        <Label Grid.Row="0" Grid.Column="1" Name="vers" Grid.ColumnSpan="2" />
+        <Label Grid.Row="1" Grid.Column="0" Content="License:" FontWeight="Bold" HorizontalAlignment="Right"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="MIT" Grid.ColumnSpan="2" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Repository:" FontWeight="Bold" HorizontalAlignment="Right"/>
+        <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
+                <Hyperlink NavigateUri="https://github.com/retifrav/hugeCSVsplitter" RequestNavigate="openLink">
+                    GitHub
+                </Hyperlink>
+            </TextBlock>
+        </Label>
+        <Label Grid.Row="3" Grid.Column="0" Content="Author:" FontWeight="Bold" HorizontalAlignment="Right"/>
+        <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+            <TextBlock>
+                retif (<Hyperlink Name="email" NavigateUri="mailto:retifrav@gmail.com" RequestNavigate="openLink" MouseRightButtonDown="copyEmail">
+                retifrav@gmail.com</Hyperlink>)
+            </TextBlock>
+        </Label>
+        <TabControl Grid.ColumnSpan="3" Grid.Row="4" Margin="0 10 0 0">
+            <TabItem Header="Description">
+                <TextBlock Margin="5" TextWrapping="Wrap">
+                    Say, you have a really huge CSV file, like 1 GB or even more. What to do with it? No
+                    common application will open it normally. Think - you need 1 GB free RAM to do so. And
+                    what if it's 5 GB? Or 10?
+                    <LineBreak/><LineBreak/>
+                    The solution is: split that file into several smaller files, which can be delt with. This
+                    applicatin is dedicated to do such thing.
+                    <LineBreak/><LineBreak/>
+                    All you need to do is grab your file and drop it in the dashed drop area. Or you can
+                    specify the path to the file in the first text filed. The next thing -
+                    you specify the output directory, where splitted files will be saved. You can leave that
+                    field blank and files will be saved to the source CSV file directory.
+                </TextBlock>
+            </TabItem>
+            <TabItem Header="Settings">
+                <TextBlock Margin="5" TextWrapping="Wrap">
+                    You can set some splitting settings in the [.config] file:
+                    <LineBreak/><LineBreak/>
+                    - <TextBlock FontWeight="Bold">linesPerFile</TextBlock>: how mush lines will trigger
+                    the splitting into another file. I'd recommend value 500k or more if strings in you 
+                    CSV are rather short and 100k or less if they are pretty long. Anyway, don't set
+                    very big values for the obvious reasons.
+                </TextBlock>
+            </TabItem>
+            <TabItem Header="Command line arguments">
+                <TextBlock Margin="5" TextWrapping="Wrap">
+                    You can start the application with command line arguments:
+                    <LineBreak/><LineBreak/>
+                    <TextBlock FontFamily="Courier New" FontWeight="Bold">-i</TextBlock>
+                    <TextBlock Margin="15 0 0 0">path to the source CSV file</TextBlock>
+                    <LineBreak/>
+                    <TextBlock FontFamily="Courier New" FontWeight="Bold">-o</TextBlock>
+                    <TextBlock Margin="15 0 0 0">path to the output directory. By default to the source file directory</TextBlock>
+                    <LineBreak/>
+                    <TextBlock FontFamily="Courier New" FontWeight="Bold">-s</TextBlock>
+                    <TextBlock Margin="15 0 0 0">how much lines will trigger the splitting into another file</TextBlock>
+                    <LineBreak/><LineBreak/>
+                    Example:<LineBreak/><LineBreak/>
+                    <TextBlock FontFamily="Courier New">hugeCSVsplitter.exe -i D:\somefile.csv -o D:\splitted\ -s 25000</TextBlock>
+                </TextBlock>
+            </TabItem>
+            <TabItem Header="3rd party">
+                <TextBlock Margin="5" TextWrapping="Wrap">
+                    The application is written in C#, WPF with Visual Studio 2013 (if that matters)
+                    and .NET 4.5.1. Those nasty bastards did all the work, I just wrote a few lines
+                    of code.
+                    <LineBreak/><LineBreak/>
+                    Also I used <Hyperlink NavigateUri="http://www.ookii.org/Software/Dialogs/"
+                    RequestNavigate="openLink">Ookii.Dialogs</Hyperlink>
+                    for open file/folder dialogs, because for some reasons there is no such thing
+                    as OpenDirectoryDialog in WPF.
+                    <LineBreak/><LineBreak/>
+                    Also I snatched some (all) icons from <Hyperlink NavigateUri="https://www.iconfinder.com/"
+                    RequestNavigate="openLink">Iconfinder</Hyperlink>.
+                </TextBlock>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
