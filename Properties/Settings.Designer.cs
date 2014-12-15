@@ -25,13 +25,25 @@ namespace hugeCSVsplitter.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("500000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("321456")]
         public int linesPerFile {
             get {
                 return ((int)(this["linesPerFile"]));
             }
             set {
                 this["linesPerFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool addHeader {
+            get {
+                return ((bool)(this["addHeader"]));
+            }
+            set {
+                this["addHeader"] = value;
             }
         }
     }

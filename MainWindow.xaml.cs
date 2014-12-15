@@ -213,9 +213,47 @@ namespace hugeCSVsplitter
             int partsCounter = 1;
             bool progressWasSet = false;
             Stopwatch sw = Stopwatch.StartNew();
+
+            int bufferCap = Properties.Settings.Default.linesPerFile;
+            if (bufferCap > 999999) // если пользователь вмочил буфер на лимон и более - урезать
+            {
+                bufferCap = 300000;
+                MessageBox.Show(
+                    string.Format("You have set a pretty damn big buffer. It will be reduced to {0}.",
+                        bufferCap.ToString()),
+                    "Buffer is too damn big",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                    );
+            }
+            else
+            {
+                if (bufferCap < 1000) // если в буфер не пролезают даже кварки - расширить
+                {
+                    bufferCap = 50000;
+                    MessageBox.Show(
+                        string.Format("You have set a pretty damn small buffer. It will be increased to {0}.",
+                            bufferCap.ToString()),
+                        "Buffer is too damn small",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                        );
+                }
+            }
             try
             {
                 FileInfo fi = new FileInfo(System.IO.Path.Combine(outDir, fileName));
+                
+                string header = string.Empty;
+                bool addHeader = Properties.Settings.Default.addHeader;
+                if (addHeader) // читаем шапку CSV "таблицы", если это надо
+                {
+                    using (var reader = new StreamReader(fileName))
+                    {
+                        header = reader.ReadLine();
+                    }
+                }
+                
                 // открываем файл и читаем строки, пока не настанет конец файла
                 using (var reader = new StreamReader(fileName))
                 {
@@ -225,15 +263,18 @@ namespace hugeCSVsplitter
                     while ((line = reader.ReadLine()) != null)
                     {
                         // если буфер достиг максимума, скинуть его в файл и опустошить
-                        if (currentLine >= Properties.Settings.Default.linesPerFile)
+                        if (currentLine >= bufferCap)
                         {
-                            File.WriteAllLines(string.Format("{0}_part{1}{2}",
-                                System.IO.Path.Combine(
-                                    outDir,
-                                    System.IO.Path.GetFileNameWithoutExtension(fileName)
-                                    ),
-                                partsCounter.ToString(),
-                                fileExt), buffer);
+                            if (!string.IsNullOrEmpty(header)) { buffer.Insert(0, header); }
+                            File.WriteAllLines(
+                                string.Format("{0}_part{1}{2}",
+                                    System.IO.Path.Combine(
+                                        outDir,
+                                        System.IO.Path.GetFileNameWithoutExtension(fileName)
+                                        ),
+                                    partsCounter.ToString(),
+                                    ".csv"), // fileExt
+                                buffer);
                             buffer.Clear();
                             currentLine = 0;
                             this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
@@ -256,11 +297,11 @@ namespace hugeCSVsplitter
                                         System.IO.Path.GetFileNameWithoutExtension(fileName)
                                         ),
                                     partsCounter.ToString(),
-                                    fileExt));
+                                    ".csv")); // fileExt
                                 this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                                 {
                                     // поправка на ветер
-                                    pb_splitting.Maximum = fi.Length / fiPart.Length + 25;
+                                    pb_splitting.Maximum = fi.Length / fiPart.Length + 30;
                                     pb_splitting.Value = 0;
                                 }
                                 ));
@@ -283,17 +324,30 @@ namespace hugeCSVsplitter
                         }
                     }
                     // если в буфере что-то есть, то скинуть в файл
-                    File.WriteAllLines(string.Format("{0}_part{1}{2}",
-                        System.IO.Path.Combine(
-                            outDir,
-                            System.IO.Path.GetFileNameWithoutExtension(fileName)
-                            ),
-                        partsCounter.ToString(),
-                        fileExt), buffer);
-                    buffer.Clear();
+                    if (buffer.Count > 0)
+                    {
+                        if (!string.IsNullOrEmpty(header)) { buffer.Insert(0, header); }
+                        File.WriteAllLines(
+                            string.Format("{0}_part{1}{2}",
+                                System.IO.Path.Combine(
+                                    outDir,
+                                    System.IO.Path.GetFileNameWithoutExtension(fileName)
+                                    ),
+                                partsCounter.ToString(),
+                                ".csv"), // fileExt
+                            buffer);
+                        buffer.Clear();
+                    }
                 }
 
+                // останавливаем таймер
                 sw.Stop();
+                // прогресс-бар на 100%
+                this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                    {
+                        pb_splitting.Value = pb_splitting.Maximum;
+                    }
+                ));
                 MessageBox.Show(
                     string.Format("The file was successfully splitted into {0} parts. It took {1}.",
                         partsCounter.ToString(),

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="hugeCSVsplitter.HelpWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="About hugeCSVsplitter" Height="372" Width="526" ResizeMode="NoResize">
+        Title="About hugeCSVsplitter" Height="373" Width="526" ResizeMode="NoResize">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
@@ -58,12 +58,16 @@
                     You can set some splitting settings in the [.config] file:
                     <LineBreak/><LineBreak/>
                     - <TextBlock FontWeight="Bold">linesPerFile</TextBlock>: how mush lines will trigger
-                    the splitting into another file. I'd recommend value 500k or more if strings in you 
-                    CSV are rather short and 100k or less if they are pretty long. Anyway, don't set
+                    the splitting into another file. I'd recommend value [500k] or more if strings in you 
+                    CSV are rather short and [100k] or less if they are pretty long. Anyway, don't set
                     very big values for the obvious reasons.
+                    <LineBreak/><LineBreak/>
+                    - <TextBlock FontWeight="Bold">addHeader</TextBlock>: set [true] if you want
+                    to add the first string (header) of the source file to all splitted parts, set
+                    [false] if you don't. Default value is [true].
                 </TextBlock>
             </TabItem>
-            <TabItem Header="Command line arguments">
+            <!--<TabItem Header="Command line arguments">
                 <TextBlock Margin="5" TextWrapping="Wrap">
                     You can start the application with command line arguments:
                     <LineBreak/><LineBreak/>
@@ -78,8 +82,11 @@
                     <LineBreak/><LineBreak/>
                     Example:<LineBreak/><LineBreak/>
                     <TextBlock FontFamily="Courier New">hugeCSVsplitter.exe -i D:\somefile.csv -o D:\splitted\ -s 25000</TextBlock>
+                    <LineBreak/><LineBreak/>
+                    or with default values:<LineBreak/><LineBreak/>
+                    <TextBlock FontFamily="Courier New">hugeCSVsplitter.exe -i D:\somefile.csv</TextBlock>
                 </TextBlock>
-            </TabItem>
+            </TabItem>-->
             <TabItem Header="3rd party">
                 <TextBlock Margin="5" TextWrapping="Wrap">
                     The application is written in C#, WPF with Visual Studio 2013 (if that matters)
