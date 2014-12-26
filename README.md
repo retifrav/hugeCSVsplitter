@@ -3,16 +3,16 @@ About
     
 Say, you have a really huge CSV file, like 1 GB or even more. What to do with it? No common application will open it normally. Think - you need 1 GB free RAM to do so. And what if it's 5 GB? Or 10?
 
-The solution is: split that file into several smaller files, which can be delt with. This applicatin is dedicated to do such thing.
+The solution is: split that file into several smaller files, which can be delt with. This application is dedicated to do such thing.
 
 ![hugeCSVsplitter main window screenshot](/img/mainwindow.png?raw=true "hugeCSVsplitter main window screenshot")
 
-All you need to do is grab your file and drop it in the dashed drop area. Or you can specify the path to the file in the first text filed. The next thing - you specify the output directory, where splitted files will be saved. You can leave that field blank and files will be saved to the source CSV file directory.
+All you need to do is grab your file and drop it in the dashed drop area. Or you can specify the path to the file in the first text field. The next thing you do - specify the output directory in the second field, where splitted files will be saved. You can leave that field blank and files will be saved to the source CSV file directory.
 
 Settings
 ========
 
-You can set some splitting settings in the `.config` file:
+You can set some splitting settings in the `.config` file.
 
 #### linesPerFile
 
