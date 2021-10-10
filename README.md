@@ -16,7 +16,7 @@ You can set some splitting settings in the `.config` file.
 
 #### linesPerFile
 
-How mush lines will trigger the splitting into another file. I'd recommend value `500k` or more if strings in you CSV are rather short and `100k` or less if they are pretty long. Anyway, don't set very big values for the obvious reasons.
+How much lines will trigger the splitting into another file. I'd recommend value `500k` or more if strings in you CSV are rather short and `100k` or less if they are pretty long. Anyway, don't set very big values for the obvious reasons.
 
 #### addHeader
 
