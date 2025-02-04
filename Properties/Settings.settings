@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="linesPerFile" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">321456</Value>
+      <Value Profile="(Default)">100000</Value>
     </Setting>
     <Setting Name="addHeader" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

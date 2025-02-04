@@ -1,5 +1,4 @@
-obj/
-bin/[Dd]ebug
-*.vshost.*
-*.pdb
+
+
+.DS_Store
 Thumbs.db

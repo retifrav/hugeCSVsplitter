@@ -120,7 +120,7 @@ namespace hugeCSVsplitter
                 if (string.IsNullOrEmpty(fileExt))
                 {
                     MessageBox.Show(
-                            "The file has no extesion. Actually, it's not that big of a deal, but... long story. Having some extension is mandatory.",
+                            "The file has no extesion. Actually, it's not that big of a deal, but... long story. Having an extension is mandatory.",
                             "File without extension",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning
@@ -130,7 +130,7 @@ namespace hugeCSVsplitter
                 if (fileExt != ".csv")
                 {
                     if (MessageBox.Show(
-                            string.Format("Are you sure that you want to split [{0}] file? Based on extension, it's not a CSV file.", fileExt),
+                            string.Format("Are you sure that you want to split [{0}] file? Based on file the extension, it is not a CSV file.", fileExt),
                             "Wrong file extension",
                             MessageBoxButton.YesNo,
                             MessageBoxImage.Question,
@@ -151,7 +151,7 @@ namespace hugeCSVsplitter
                         catch (Exception ex)
                         {
                             MessageBox.Show(
-                                string.Format("Creation directory [{0}] failed.{1}Details:{2}",
+                                string.Format("Creating directory [{0}] failed.{1}Details:{2}",
                                     outputDir.Text, Environment.NewLine, ex.Message),
                                 "Couldn't create directory",
                                 MessageBoxButton.OK,
@@ -175,7 +175,7 @@ namespace hugeCSVsplitter
 
                 // --- все проверки прошли, начинаем
                 
-                txbx_log.Text += string.Format("[{0}] The splitting started. Output directory: {2}{1}",
+                txbx_log.Text += string.Format("[{0}] The splitting has started. Output directory: {2}{1}",
                     DateTime.Now.ToString(), Environment.NewLine, outDir);
 
                 cts = new CancellationTokenSource();
@@ -362,7 +362,7 @@ namespace hugeCSVsplitter
                 if (ex is OperationCanceledException)
                 {
                     MessageBox.Show(
-                        string.Format("User has canselled the operation. The file has been splitted so far into {0} parts.",
+                        string.Format("User has canselled the operation. The file has been splitted into {0} parts so far.",
                             partsCounter.ToString()),
                         "Operation cancelled",
                         MessageBoxButton.OK,

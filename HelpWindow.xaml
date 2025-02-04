@@ -41,31 +41,34 @@
         <TabControl Grid.ColumnSpan="3" Grid.Row="4" Margin="0 10 0 0">
             <TabItem Header="Description">
                 <TextBlock Margin="5" TextWrapping="Wrap">
-                    Say, you have a really huge CSV file, like 1 GB or even more. What to do with it? No
-                    common application will open it normally. Think - you need 1 GB free RAM to do so. And
-                    what if it's 5 GB? Or 10?
+                    Say, you have a really huge CSV file, like 1 GB or even more. What can you do with it?
+                    Common application are likely to struggle with it, as you'd need 1 GB of free RAM to do
+                    so. And what if the file is 5 GB? Or 10 GB?
                     <LineBreak/><LineBreak/>
-                    The solution is: split that file into several smaller files, which can be delt with. This
-                    applicatin is dedicated to do such thing.
+                    One possible solution would be to split that file into several smaller files, which
+                    could be delt with separately. And this application serves that exact purpose - splitting
+                    files.
                     <LineBreak/><LineBreak/>
-                    All you need to do is grab your file and drop it in the dashed drop area. Or you can
-                    specify the path to the file in the first text filed. The next thing -
-                    you specify the output directory, where splitted files will be saved. You can leave that
-                    field blank and files will be saved to the source CSV file directory.
+                    All you need to do is to drag-and-drop your file to the dashed area in the middle
+                    of the main application window. Or you can specify the path to the file in the first text
+                    input field. Then you can specify the output directory - where splitted files will be saved
+                    - but you can leave that field blank, and then resulting files will be saved to the same
+                    directory where the original CSV file is.
                 </TextBlock>
             </TabItem>
             <TabItem Header="Settings">
-                <TextBlock Margin="5" TextWrapping="Wrap">
-                    You can set some splitting settings in the [.config] file:
+                <TextBlock Margin="10,5,0,5" TextWrapping="Wrap">
+                    There are some settings in the <TextBlock FontFamily="Courier New">*.config</TextBlock> file:
                     <LineBreak/><LineBreak/>
-                    - <TextBlock FontWeight="Bold">linesPerFile</TextBlock>: how mush lines will trigger
-                    the splitting into another file. I'd recommend value [500k] or more if strings in you 
-                    CSV are rather short and [100k] or less if they are pretty long. Anyway, don't set
-                    very big values for the obvious reasons.
+                    - <TextBlock FontWeight="Bold">linesPerFile</TextBlock>: how many lines will trigger
+                    splitting into a new file. I would recommend setting <TextBlock FontFamily="Courier New">500000</TextBlock>
+                    or more there, if strings in you CSV file are rather short. Otherwise, I would set <TextBlock FontFamily="Courier New">100000</TextBlock>
+                    or less. Either way, don't set it to very big values, as then you will encounter the same problem
+                    of running our of available RAM.
                     <LineBreak/><LineBreak/>
-                    - <TextBlock FontWeight="Bold">addHeader</TextBlock>: set [true] if you want
-                    to add the first string (header) of the source file to all splitted parts, set
-                    [false] if you don't. Default value is [true].
+                    - <TextBlock FontWeight="Bold">addHeader</TextBlock>: set to <TextBlock FontFamily="Courier New">True</TextBlock>,
+                    (<TextBlock FontStyle="Italic">default value</TextBlock>) if you want to add the first header line
+                    from the source file to all the splitted files. Otherwise, set to <TextBlock FontFamily="Courier New">False</TextBlock>.
                 </TextBlock>
             </TabItem>
             <!--<TabItem Header="Command line arguments">
@@ -90,17 +93,18 @@
             </TabItem>-->
             <TabItem Header="3rd party">
                 <TextBlock Margin="5" TextWrapping="Wrap">
-                    The application is written in C#, WPF with Visual Studio 2013 (if that matters)
-                    and .NET 4.5.1. Those nasty bastards did all the work, I just wrote a few lines
-                    of code.
+                    The application is written in C# / WPF and .NET Framework. Those nasty bastards
+                    did all the work, I just wrote a few lines of code.
                     <LineBreak/><LineBreak/>
-                    Also I used <Hyperlink NavigateUri="http://www.ookii.org/Software/Dialogs/"
+                    I used <Hyperlink NavigateUri="https://ookii.org/Software/Dialogs/"
                     RequestNavigate="openLink">Ookii.Dialogs</Hyperlink>
-                    for open file/folder dialogs, because for some reasons there is no such thing
-                    as OpenDirectoryDialog in WPF.
+                    for the file/folder dialogs, because for some reasons there is no such thing
+                    as <TextBlock FontFamily="Courier New">OpenDirectoryDialog</TextBlock> in WPF
+                    (<TextBlock FontStyle="Italic">or at least there wasn't in .NET 4.5.1</TextBlock>) .
                     <LineBreak/><LineBreak/>
-                    Also I snatched some (all) icons from <Hyperlink NavigateUri="https://www.iconfinder.com/"
-                    RequestNavigate="openLink">Iconfinder</Hyperlink>.
+                    Also I snatched some (<TextBlock FontStyle="Italic">all</TextBlock>) the icons from
+                    <Hyperlink NavigateUri="https://www.iconfinder.com/" RequestNavigate="openLink">Iconfinder</Hyperlink>.
+                    Which probably violates some license, but I was young and reckless back then.
                 </TextBlock>
             </TabItem>
         </TabControl>
