@@ -1,4 +1,13 @@
+/bin/
+/obj/
 
+.vs/*
+
+*.suo
+*.vshost.*
+*.pdb
+*.csproj.user
+*.Designer.cs
 
 .DS_Store
 Thumbs.db
