@@ -22,7 +22,13 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Version:" FontWeight="Bold" HorizontalAlignment="Right"/>
         <Label Grid.Row="0" Grid.Column="1" Name="vers" Grid.ColumnSpan="2" />
         <Label Grid.Row="1" Grid.Column="0" Content="License:" FontWeight="Bold" HorizontalAlignment="Right"/>
-        <Label Grid.Row="1" Grid.Column="1" Content="MIT" Grid.ColumnSpan="2" />
+        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
+                <Hyperlink NavigateUri="https://raw.githubusercontent.com/retifrav/hugeCSVsplitter/refs/heads/master/LICENSE" RequestNavigate="openLink">
+                    GPLv3
+                </Hyperlink>
+            </TextBlock>
+        </Label>
         <Label Grid.Row="2" Grid.Column="0" Content="Repository:" FontWeight="Bold" HorizontalAlignment="Right"/>
         <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
             <TextBlock Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
@@ -31,11 +37,10 @@
                 </Hyperlink>
             </TextBlock>
         </Label>
-        <Label Grid.Row="3" Grid.Column="0" Content="Author:" FontWeight="Bold" HorizontalAlignment="Right"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Copyright:" FontWeight="Bold" HorizontalAlignment="Right"/>
         <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
             <TextBlock>
-                retif (<Hyperlink Name="email" NavigateUri="mailto:retifrav@gmail.com" RequestNavigate="openLink" MouseRightButtonDown="copyEmail">
-                retifrav@gmail.com</Hyperlink>)
+                2014, <Hyperlink NavigateUri="https://decovar.dev/" RequestNavigate="openLink">Declaration of VAR</Hyperlink>
             </TextBlock>
         </Label>
         <TabControl Grid.ColumnSpan="3" Grid.Row="4" Margin="0 10 0 0">

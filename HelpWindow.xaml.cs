@@ -44,16 +44,5 @@ namespace hugeCSVsplitter
             
             e.Handled = true;
         }
-
-        private void copyEmail(object sender, MouseButtonEventArgs e)
-        {
-            Clipboard.SetText(((Run)email.Inlines.FirstOrDefault()).Text);
-            MessageBox.Show(
-                "E-mail has been copied to the clipboard.",
-                "E-mail",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information
-                );
-        }
     }
 }
