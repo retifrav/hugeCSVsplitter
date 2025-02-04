@@ -1,13 +1,13 @@
-/bin/
-/obj/
+bin
+obj
 
-.vs/*
+_sln/packages
+.vs
 
 *.suo
 *.vshost.*
 *.pdb
 *.csproj.user
-*.Designer.cs
 
 .DS_Store
 Thumbs.db
