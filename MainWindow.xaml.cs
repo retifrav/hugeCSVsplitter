@@ -169,27 +169,52 @@ namespace hugeCSVsplitter
                     }
                 }
 
-                // выходная директория
                 string outDir = outputDir.Text.Trim();
-                if (!string.IsNullOrEmpty(outDir))
+                bool outDirWasNotProvided = false;
+                if (string.IsNullOrEmpty(outDir))
                 {
-                    if (!Directory.Exists(outputDir.Text))
+                    outDir = Path.Combine(
+                        Path.GetDirectoryName(fileName),
+                        Path.GetFileNameWithoutExtension(fileName)
+                    );
+                    outDirWasNotProvided = true;
+                }
+                if (!Directory.Exists(outDir))
+                {
+                    try { Directory.CreateDirectory(outDir); }
+                    catch (Exception ex)
                     {
-                        try { Directory.CreateDirectory(outputDir.Text); }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(
-                                string.Format("Creating directory [{0}] failed.{1}Details:{2}",
-                                    outputDir.Text, Environment.NewLine, ex.Message),
-                                "Couldn't create directory",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error
-                            );
-                            return;
-                        }
+                        MessageBox.Show(
+                            string.Format(
+                                "Creating directory [{0}] failed.{1}Details:{2}",
+                                outDir,
+                                Environment.NewLine,
+                                ex.Message
+                            ),
+                            "Couldn't create directory",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+                        return;
                     }
                 }
-                else { outDir = System.IO.Path.GetDirectoryName(fileName); }
+                else
+                {
+                    if (outDirWasNotProvided) // it is a fallback directory
+                    {
+                        MessageBox.Show(
+                            new StringBuilder()
+                                .Append("Since you haven't speficied the output directory, the application ")
+                                .Append($"was going to use [{outDir}], but this directory already exists. ")
+                                .Append("Won't proceed in order to avoid accidentially overriding important files.")
+                                .ToString(),
+                            "Output directory already exists",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+                        return;
+                    }
+                }
 
                 var filesEncodingName = ((ComboBoxItem)cmbx_filesEncoding.SelectedItem).Content.ToString();
 
