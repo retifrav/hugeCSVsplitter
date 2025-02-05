@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +23,36 @@ namespace hugeCSVsplitter
         public MainWindow()
         {
             InitializeComponent();
+
+            // selected text encoding for reading/writing files
+            try
+            {
+                cmbx_filesEncoding.SelectedItem = cmbx_filesEncoding.Items
+                    .Cast<ComboBoxItem>()
+                    .First(
+                        i => i.Content.ToString().ToLower() == Properties.Settings.Default.filesEncoding.ToLower()
+                    );
+            }
+            catch
+            {
+                //MessageBox.Show(
+                //    new StringBuilder()
+                //        .Append("The application config contains an unknown encoding, ")
+                //        .Append("falling back to UTF-8.")
+                //        .ToString(),
+                //    "Unknown encoding",
+                //    MessageBoxButton.OK,
+                //    MessageBoxImage.Warning
+                //);
+
+                cmbx_filesEncoding.SelectedIndex = cmbx_filesEncoding.Items.Add(
+                    new ComboBoxItem
+                    {
+                        //Tag = Properties.Settings.Default.filesEncoding.ToLower(),
+                        Content = Properties.Settings.Default.filesEncoding
+                    }
+                );
+            }
 
             // when F1 is pressed, show help window
             CommandBinding helpBinding = new CommandBinding(ApplicationCommands.Help);
@@ -159,6 +191,8 @@ namespace hugeCSVsplitter
                 }
                 else { outDir = System.IO.Path.GetDirectoryName(fileName); }
 
+                var filesEncodingName = ((ComboBoxItem)cmbx_filesEncoding.SelectedItem).Content.ToString();
+
                 sourceCSVpath.IsEnabled = false;
                 outputDir.IsEnabled = false;
 
@@ -185,6 +219,7 @@ namespace hugeCSVsplitter
                         outDir,
                         fileName,
                         fileExt,
+                        filesEncodingName,
                         cts.Token
                     ),
                     cts.Token
@@ -213,6 +248,7 @@ namespace hugeCSVsplitter
             string outDir,
             string fileName,
             string fileExt,
+            string filesEncodingName,
             CancellationToken cancellationToken
             )
         {
@@ -238,8 +274,10 @@ namespace hugeCSVsplitter
                 {
                     bufferCap = 50000;
                     MessageBox.Show(
-                        string.Format("You have set a pretty damn small buffer. It will be increased to {0}.",
-                            bufferCap.ToString()),
+                        string.Format(
+                            "You have set a pretty damn small buffer. It will be increased to {0}.",
+                            bufferCap.ToString()
+                        ),
                         "Buffer is too damn small",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
@@ -248,21 +286,31 @@ namespace hugeCSVsplitter
             }
             try
             {
-                FileInfo fi = new FileInfo(System.IO.Path.Combine(outDir, fileName));
-                
-                string header = string.Empty;
-                bool addHeader = Properties.Settings.Default.addHeader;
-                if (addHeader) // читаем шапку CSV "таблицы", если это надо
+                FileInfo fi = new FileInfo(Path.Combine(outDir, fileName));
+
+                var filesEncoding = Encoding.GetEncoding("utf-8"); // fallback encoding
+                try
                 {
-                    using (var reader = new StreamReader(fileName))
+                    filesEncoding = Encoding.GetEncoding(filesEncodingName);
+                }
+                catch // (ArgumentException ex)
+                {
+                    MessageBox.Show(
+                        "Could not find the specified encoding, will default to UTF-8.",
+                        "Unknown encoding",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                }
+
+                using (var reader = new StreamReader(fileName, filesEncoding))
+                {
+                    string header = string.Empty;
+                    if (Properties.Settings.Default.addHeader) // читаем шапку CSV "таблицы", если это надо
                     {
                         header = reader.ReadLine();
                     }
-                }
                 
-                // открываем файл и читаем строки, пока не настанет конец файла
-                using (var reader = new StreamReader(fileName))
-                {
                     int currentLine = 0;
                     string line;
                     List<string> buffer = new List<string>();
@@ -272,6 +320,7 @@ namespace hugeCSVsplitter
                         if (currentLine >= bufferCap)
                         {
                             if (!string.IsNullOrEmpty(header)) { buffer.Insert(0, header); }
+                            
                             File.WriteAllLines(
                                 string.Format(
                                     "{0}_part{1}{2}",
@@ -282,7 +331,9 @@ namespace hugeCSVsplitter
                                     partsCounter.ToString(),
                                     ".csv" // fileExt
                                 ),
-                                buffer);
+                                buffer,
+                                filesEncoding
+                            );
                             buffer.Clear();
                             currentLine = 0;
                             this.Dispatcher.Invoke(
@@ -357,8 +408,10 @@ namespace hugeCSVsplitter
                                     Path.GetFileNameWithoutExtension(fileName)
                                 ),
                                 partsCounter.ToString(),
-                                ".csv"), // fileExt
-                            buffer
+                                ".csv" // fileExt
+                            ),
+                            buffer,
+                            filesEncoding
                         );
                         buffer.Clear();
                     }

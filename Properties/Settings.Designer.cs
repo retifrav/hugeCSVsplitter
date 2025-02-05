@@ -46,5 +46,17 @@ namespace hugeCSVsplitter.Properties {
                 this["addHeader"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UTF-8")]
+        public string filesEncoding {
+            get {
+                return ((string)(this["filesEncoding"]));
+            }
+            set {
+                this["filesEncoding"] = value;
+            }
+        }
     }
 }

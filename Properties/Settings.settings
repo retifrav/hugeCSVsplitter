@@ -8,5 +8,8 @@
     <Setting Name="addHeader" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="filesEncoding" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UTF-8</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
