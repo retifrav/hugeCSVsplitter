@@ -43,7 +43,7 @@ namespace hugeCSVsplitter
         private void Application_DispatcherUnhandledException(
             object sender,
             System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e
-            )
+        )
         {
             MessageBox.Show(
                 //string.Format("Some error has just hapenned.{1}Details: {0}{1}Even more details: {2}", e.Exception.Message, Environment.NewLine, e.Exception.StackTrace),
@@ -52,7 +52,7 @@ namespace hugeCSVsplitter
                 "Unknown error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error
-                );
+            );
             e.Handled = true;
         }
     }

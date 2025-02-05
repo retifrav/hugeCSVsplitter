@@ -28,7 +28,7 @@ namespace hugeCSVsplitter
                     "Couldn't open the link",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
-                    );
+                );
             }
             
             e.Handled = true;

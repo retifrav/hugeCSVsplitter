@@ -44,7 +44,7 @@ namespace hugeCSVsplitter
                         "You dragged more than 1 file",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
-                        );
+                    );
                 }
                 //foreach (string file in files)
                 //{
@@ -73,12 +73,12 @@ namespace hugeCSVsplitter
 
         private void resetAll()
         {
-            btn_stopDat.Visibility = System.Windows.Visibility.Hidden;
-            btn_spitDat.Visibility = System.Windows.Visibility.Visible;
+            btn_stopDat.Visibility = Visibility.Hidden;
+            btn_spitDat.Visibility = Visibility.Visible;
 
-            pb_splitting.Visibility = System.Windows.Visibility.Hidden;
-            txbx_log.Visibility = System.Windows.Visibility.Hidden;
-            bdr_drop.Visibility = System.Windows.Visibility.Visible;
+            pb_splitting.Visibility = Visibility.Hidden;
+            txbx_log.Visibility = Visibility.Hidden;
+            bdr_drop.Visibility = Visibility.Visible;
 
             pb_splitting.Value = 0;
             pb_splitting.Minimum = 0;
@@ -100,33 +100,38 @@ namespace hugeCSVsplitter
                 if (!File.Exists(fileName))
                 {
                     MessageBox.Show(
-                            string.Format("The specified file [{0}] doesn't exist.", fileName),
-                            "File doesn't exist",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error
-                            );
+                        string.Format("The specified file [{0}] doesn't exist.", fileName),
+                        "File doesn't exist",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                     return;
                 }
                 string fileExt = System.IO.Path.GetExtension(fileName);
                 if (string.IsNullOrEmpty(fileExt))
                 {
                     MessageBox.Show(
-                            "The file has no extesion. Actually, it's not that big of a deal, but... long story. Having an extension is mandatory.",
-                            "File without extension",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning
-                            );
+                        "The file has no extesion. Actually, it's not that big of a deal, but... long story. Having an extension is mandatory.",
+                        "File without extension",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
                     return;
                 }
                 if (fileExt != ".csv")
                 {
-                    if (MessageBox.Show(
-                            string.Format("Are you sure that you want to split [{0}] file? Based on file the extension, it is not a CSV file.", fileExt),
+                    if (
+                        MessageBox.Show(
+                            string.Format(
+                                "Are you sure that you want to split [{0}] file? Based on file the extension, it is not a CSV file.",
+                                fileExt
+                            ),
                             "Wrong file extension",
                             MessageBoxButton.YesNo,
                             MessageBoxImage.Question,
                             MessageBoxResult.No
-                            ) == MessageBoxResult.No)
+                        ) == MessageBoxResult.No
+                    )
                     {
                         return;
                     }
@@ -147,7 +152,7 @@ namespace hugeCSVsplitter
                                 "Couldn't create directory",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error
-                                );
+                            );
                             return;
                         }
                     }
@@ -157,29 +162,39 @@ namespace hugeCSVsplitter
                 sourceCSVpath.IsEnabled = false;
                 outputDir.IsEnabled = false;
 
-                btn_spitDat.Visibility = System.Windows.Visibility.Hidden;
-                btn_stopDat.Visibility = System.Windows.Visibility.Visible;
+                btn_spitDat.Visibility = Visibility.Hidden;
+                btn_stopDat.Visibility = Visibility.Visible;
 
-                bdr_drop.Visibility = System.Windows.Visibility.Hidden;
-                pb_splitting.Visibility = System.Windows.Visibility.Visible;
-                txbx_log.Visibility = System.Windows.Visibility.Visible;
+                bdr_drop.Visibility = Visibility.Hidden;
+                pb_splitting.Visibility = Visibility.Visible;
+                txbx_log.Visibility = Visibility.Visible;
 
                 // --- все проверки прошли, начинаем
                 
-                txbx_log.Text += string.Format("[{0}] The splitting has started. Output directory: {2}{1}",
-                    DateTime.Now.ToString(), Environment.NewLine, outDir);
+                txbx_log.Text += string.Format(
+                    "[{0}] The splitting has started. Output directory: {2}{1}",
+                    DateTime.Now.ToString(),
+                    Environment.NewLine,
+                    outDir
+                );
 
                 cts = new CancellationTokenSource();
 
-                var task = Task.Run(() => splitTheFile(
-                   outDir,
-                   fileName,
-                   fileExt,
-                   cts.Token), cts.Token);
-                Task uiTask = task.ContinueWith((continuation) =>
-                {
-                    resetAll();
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                var task = Task.Run(
+                    () => splitTheFile(
+                        outDir,
+                        fileName,
+                        fileExt,
+                        cts.Token
+                    ),
+                    cts.Token
+                );
+                Task uiTask = task.ContinueWith(
+                    (continuation) =>
+                    {
+                        resetAll();
+                    }, TaskScheduler.FromCurrentSynchronizationContext()
+                );
             }
             catch (Exception ex)
             {
@@ -189,7 +204,7 @@ namespace hugeCSVsplitter
                     "Splitting failed",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
-                    );
+                );
                 resetAll();
             }
         }
@@ -215,7 +230,7 @@ namespace hugeCSVsplitter
                     "Buffer is too damn big",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
-                    );
+                );
             }
             else
             {
@@ -228,7 +243,7 @@ namespace hugeCSVsplitter
                         "Buffer is too damn small",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
-                        );
+                    );
                 }
             }
             try
@@ -258,53 +273,70 @@ namespace hugeCSVsplitter
                         {
                             if (!string.IsNullOrEmpty(header)) { buffer.Insert(0, header); }
                             File.WriteAllLines(
-                                string.Format("{0}_part{1}{2}",
-                                    System.IO.Path.Combine(
+                                string.Format(
+                                    "{0}_part{1}{2}",
+                                    Path.Combine(
                                         outDir,
-                                        System.IO.Path.GetFileNameWithoutExtension(fileName)
-                                        ),
+                                        Path.GetFileNameWithoutExtension(fileName)
+                                    ),
                                     partsCounter.ToString(),
-                                    ".csv"), // fileExt
+                                    ".csv" // fileExt
+                                ),
                                 buffer);
                             buffer.Clear();
                             currentLine = 0;
-                            this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
-                                {
-                                    txbx_log.Text += string.Format("[{0}] Part {1} was splitted.{2}",
-                                        DateTime.Now.ToString(),
-                                        partsCounter.ToString(),
-                                        Environment.NewLine
+                            this.Dispatcher.Invoke(
+                                DispatcherPriority.Normal,
+                                new Action(
+                                    () =>
+                                    {
+                                        txbx_log.Text += string.Format("[{0}] Part {1} was splitted.{2}",
+                                            DateTime.Now.ToString(),
+                                            partsCounter.ToString(),
+                                            Environment.NewLine
                                         );
-                                    txbx_log.ScrollToEnd();
-                                }
-                                ));
+                                        txbx_log.ScrollToEnd();
+                                    }
+                                )
+                            );
                             
                             // оцениваем прогресс
                             if (!progressWasSet)
                             {
-                                FileInfo fiPart = new FileInfo(string.Format("{0}_part{1}{2}",
-                                    System.IO.Path.Combine(
-                                        outDir,
-                                        System.IO.Path.GetFileNameWithoutExtension(fileName)
+                                FileInfo fiPart = new FileInfo(
+                                    string.Format("{0}_part{1}{2}",
+                                        Path.Combine(
+                                            outDir,
+                                            Path.GetFileNameWithoutExtension(fileName)
                                         ),
-                                    partsCounter.ToString(),
-                                    ".csv")); // fileExt
-                                this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
-                                {
-                                    // поправка на ветер
-                                    pb_splitting.Maximum = fi.Length / fiPart.Length + 30;
-                                    pb_splitting.Value = 0;
-                                }
-                                ));
+                                        partsCounter.ToString(),
+                                        ".csv"
+                                    )
+                                ); // fileExt
+                                this.Dispatcher.Invoke(
+                                    DispatcherPriority.Normal,
+                                    new Action(
+                                        () =>
+                                        {
+                                            // поправка на ветер
+                                            pb_splitting.Maximum = fi.Length / fiPart.Length + 30;
+                                            pb_splitting.Value = 0;
+                                        }
+                                    )
+                                );
                                 progressWasSet = true;
                             }
 
                             partsCounter++;
-                            this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
-                            {
-                                pb_splitting.Value++;
-                            }
-                            ));
+                            this.Dispatcher.Invoke(
+                                DispatcherPriority.Normal,
+                                new Action(
+                                    () =>
+                                    {
+                                        pb_splitting.Value++;
+                                    }
+                                )
+                            );
                             // проверяем, не был ли процесс отменён
                             cancellationToken.ThrowIfCancellationRequested();
                         }
@@ -320,13 +352,14 @@ namespace hugeCSVsplitter
                         if (!string.IsNullOrEmpty(header)) { buffer.Insert(0, header); }
                         File.WriteAllLines(
                             string.Format("{0}_part{1}{2}",
-                                System.IO.Path.Combine(
+                                Path.Combine(
                                     outDir,
-                                    System.IO.Path.GetFileNameWithoutExtension(fileName)
-                                    ),
+                                    Path.GetFileNameWithoutExtension(fileName)
+                                ),
                                 partsCounter.ToString(),
                                 ".csv"), // fileExt
-                            buffer);
+                            buffer
+                        );
                         buffer.Clear();
                     }
                 }
@@ -346,7 +379,7 @@ namespace hugeCSVsplitter
                     "Splitting completed",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
-                    );
+                );
             }
             catch (Exception ex)
             {
@@ -358,7 +391,7 @@ namespace hugeCSVsplitter
                         "Operation cancelled",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
-                        );
+                    );
                 }
                 else
                 {
@@ -368,7 +401,7 @@ namespace hugeCSVsplitter
                         "Process failed",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error
-                        );
+                    );
                 }
             }
         }
