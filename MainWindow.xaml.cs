@@ -66,7 +66,6 @@ namespace hugeCSVsplitter
 
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                // Note that you can have more than one file.
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 if (files.Length > 1)
@@ -139,7 +138,7 @@ namespace hugeCSVsplitter
                     );
                     return;
                 }
-                string fileExt = System.IO.Path.GetExtension(fileName);
+                string fileExt = Path.GetExtension(fileName);
                 if (string.IsNullOrEmpty(fileExt))
                 {
                     MessageBox.Show(
@@ -454,7 +453,7 @@ namespace hugeCSVsplitter
                     string.Format("The file was successfully splitted into {0} parts. It took {1}.",
                         partsCounter.ToString(),
                         sw.Elapsed.ToString()),
-                    "Splitting completed",
+                    "Done",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
                 );
