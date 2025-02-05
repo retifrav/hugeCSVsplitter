@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Input;
 
 namespace hugeCSVsplitter
 {
@@ -15,6 +16,17 @@ namespace hugeCSVsplitter
             InitializeComponent();
 
             vers.Content = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        // https://stackoverflow.com/a/66864661/1688203
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (!e.Handled && e.Key == Key.Escape && Keyboard.Modifiers == ModifierKeys.None)
+            {
+                this.Close();
+            }
         }
 
         private void openLink(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
