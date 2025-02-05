@@ -40,7 +40,7 @@
                  ToolTip="Path to directory, where splitted parts will be saved. Leave this field blank, if you want to put them in the same directory as the source CSV file. Double-click to set the path."
                  MouseDoubleClick="outputDir_MouseDoubleClick" />
 
-        <Button Name="btn_spitDat" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" IsEnabled="False" Margin="2"
+        <Button Name="btn_spitDat" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" IsEnabled="False" Margin="2"
                 Click="btn_spitDat_Click" ToolTip="Split the file">
             <Image Source="reses/axe.png" Margin="5">
                 <Image.Style>
@@ -54,7 +54,7 @@
                 </Image.Style>
             </Image>
         </Button>
-        <Button Name="btn_stopDat" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Visibility="Hidden" Margin="2"
+        <Button Name="btn_stopDat" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" Visibility="Hidden" Margin="2"
                 Click="btn_stopDat_Click" ToolTip="Stop the splitting">
             <Image Source="reses/stop.png" Margin="5" />
         </Button>
