@@ -346,15 +346,17 @@ namespace hugeCSVsplitter
                         header = reader.ReadLine();
                     }
                 
-                    int currentLine = 0;
-                    string line;
+                    int linesCount = 0;
+                    string line = string.Empty;
                     List<string> buffer = new List<string>();
                     while ((line = reader.ReadLine()) != null)
                     {
+                        buffer.Add(line);
+                        linesCount++;
                         // если буфер достиг максимума, скинуть его в файл и опустошить
-                        if (currentLine >= bufferCap)
+                        if (linesCount >= bufferCap)
                         {
-                            if (!string.IsNullOrEmpty(header)) { buffer.Insert(0, header); }
+                            if (Properties.Settings.Default.addHeader) { buffer.Insert(0, header); }
                             
                             File.WriteAllLines(
                                 string.Format(
@@ -369,8 +371,10 @@ namespace hugeCSVsplitter
                                 buffer,
                                 filesEncoding
                             );
+                            
                             buffer.Clear();
-                            currentLine = 0;
+                            linesCount = 0;
+                            
                             this.Dispatcher.Invoke(
                                 DispatcherPriority.Normal,
                                 new Action(
@@ -414,6 +418,7 @@ namespace hugeCSVsplitter
                             }
 
                             partsCounter++;
+
                             this.Dispatcher.Invoke(
                                 DispatcherPriority.Normal,
                                 new Action(
@@ -426,16 +431,13 @@ namespace hugeCSVsplitter
                             // проверяем, не был ли процесс отменён
                             cancellationToken.ThrowIfCancellationRequested();
                         }
-                        else
-                        {
-                            buffer.Add(line);
-                            currentLine++;
-                        }
                     }
+
                     // если в буфере что-то есть, то скинуть в файл
                     if (buffer.Count > 0)
                     {
                         if (!string.IsNullOrEmpty(header)) { buffer.Insert(0, header); }
+                        
                         File.WriteAllLines(
                             string.Format("{0}_part{1}{2}",
                                 Path.Combine(
@@ -448,7 +450,28 @@ namespace hugeCSVsplitter
                             buffer,
                             filesEncoding
                         );
+
                         buffer.Clear();
+
+                        this.Dispatcher.Invoke(
+                            DispatcherPriority.Normal,
+                            new Action(
+                                () =>
+                                {
+                                    txbx_log.Text += string.Format("[{0}] Part {1} was splitted.{2}",
+                                        DateTime.Now.ToString(),
+                                        partsCounter.ToString(),
+                                        Environment.NewLine
+                                    );
+                                    txbx_log.ScrollToEnd();
+                                }
+                            )
+                        );
+                    }
+                    else
+                    {
+                        // decrement parts counter to the real number of splitted parts
+                        partsCounter--;
                     }
                 }
 
@@ -461,9 +484,7 @@ namespace hugeCSVsplitter
                     }
                 ));
                 MessageBox.Show(
-                    string.Format("The file was successfully splitted into {0} parts. It took {1}.",
-                        partsCounter.ToString(),
-                        sw.Elapsed.ToString()),
+                    $"The file was successfully splitted into {partsCounter} parts. It took {sw.Elapsed}.",
                     "Done",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
@@ -474,8 +495,7 @@ namespace hugeCSVsplitter
                 if (ex is OperationCanceledException)
                 {
                     MessageBox.Show(
-                        string.Format("User has canselled the operation. The file has been splitted into {0} parts so far.",
-                            partsCounter.ToString()),
+                        $"User has canselled the operation. The file has been splitted into {partsCounter} parts so far.",
                         "Operation cancelled",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
