@@ -27,7 +27,7 @@ namespace hugeCSVsplitter
             // selected text encoding for reading/writing files
             try
             {
-                cmbx_filesEncoding.SelectedItem = cmbx_filesEncoding.Items
+                cmbx_textEncoding.SelectedItem = cmbx_textEncoding.Items
                     .Cast<ComboBoxItem>()
                     .First(
                         i => i.Content.ToString().ToLower() == Properties.Settings.Default.filesEncoding.ToLower()
@@ -45,7 +45,7 @@ namespace hugeCSVsplitter
                 //    MessageBoxImage.Warning
                 //);
 
-                cmbx_filesEncoding.SelectedIndex = cmbx_filesEncoding.Items.Add(
+                cmbx_textEncoding.SelectedIndex = cmbx_textEncoding.Items.Add(
                     new ComboBoxItem
                     {
                         //Tag = Properties.Settings.Default.filesEncoding.ToLower(),
@@ -215,7 +215,7 @@ namespace hugeCSVsplitter
                     }
                 }
 
-                var filesEncodingName = ((ComboBoxItem)cmbx_filesEncoding.SelectedItem).Content.ToString();
+                var filesEncodingName = ((ComboBoxItem)cmbx_textEncoding.SelectedItem).Content.ToString();
 
                 sourceCSVpath.IsEnabled = false;
                 outputDir.IsEnabled = false;

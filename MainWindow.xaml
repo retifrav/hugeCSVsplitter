@@ -22,22 +22,30 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Margin="2" Content="CSV file:" HorizontalAlignment="Right"/>
+        <Label Grid.Row="0" Grid.Column="0" Margin="2" Content="CSV file:" HorizontalAlignment="Right"
+               ToolTip="Path to the original CSV file that needs to be splitted. Double-click to set the path."
+               Cursor="Help"
+        />
         <TextBox Name="sourceCSVpath" Margin="2 2 2 2" Grid.Row="0" Grid.Column="1" TextChanged="sourceCSVpath_TextChanged"
-                 ToolTip="Path to the CSV file for splitting. Double-click to set the path." VerticalContentAlignment="Center"
-                 MouseDoubleClick="sourceCSVpath_MouseDoubleClick" />
+                 VerticalContentAlignment="Center"
+                 MouseDoubleClick="sourceCSVpath_MouseDoubleClick"
+        />
 
-        <Label Margin="2" Grid.Row="1" Grid.Column="0" Content="Files encoding:" HorizontalAlignment="Right"/>
-        <ComboBox Name="cmbx_filesEncoding" Grid.Row="1" Grid.Column="1" Margin="2 2 2 2" VerticalContentAlignment="Center"
-                  ToolTip="Text encoding to use for reading and writing files.">
+        <Label Margin="2" Grid.Row="1" Grid.Column="0" Content="Text encoding:" HorizontalAlignment="Right"
+               ToolTip="Text encoding for reading and writing files. If you get weird symbols in the splitted files, try setting a different encoding here."
+               Cursor="Help"
+        />
+        <ComboBox Name="cmbx_textEncoding" Grid.Row="1" Grid.Column="1" Margin="2 2 2 2" VerticalContentAlignment="Center">
             <ComboBoxItem Content="UTF-8" />
             <ComboBoxItem Content="Windows-1251" />
             <ComboBoxItem Content="KOI8-R" />
         </ComboBox>
 
-        <Label Grid.Row="2" Grid.Column="0" Margin="2" Content="Output directory:" HorizontalAlignment="Right"/>
+        <Label Grid.Row="2" Grid.Column="0" Margin="2" Content="Output directory:" HorizontalAlignment="Right"
+               ToolTip="Path to the directory, where splitted parts will be saved. Leave this field blank, if you want to put them in the same directory as the source CSV file. Double-click to set the path."
+               Cursor="Help"
+        />
         <TextBox Margin="2" Name="outputDir" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"
-                 ToolTip="Path to directory, where splitted parts will be saved. Leave this field blank, if you want to put them in the same directory as the source CSV file. Double-click to set the path."
                  MouseDoubleClick="outputDir_MouseDoubleClick" />
 
         <Button Name="btn_spitDat" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" IsEnabled="False" Margin="2"

@@ -81,7 +81,7 @@
                     
                     <LineBreak/><LineBreak/>
                     
-                    - <TextBlock FontWeight="Bold">filesEncoding</TextBlock>: text encoding to use for reading and writing files. The default value
+                    - <TextBlock FontWeight="Bold">filesEncoding</TextBlock>: text encoding for reading and writing files. The default value
                     is <TextBlock FontFamily="Courier New">utf-8</TextBlock>, but you can set any other
                     <Hyperlink NavigateUri="https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-text-encoding#list-of-encodings"
                                RequestNavigate="openLink">
