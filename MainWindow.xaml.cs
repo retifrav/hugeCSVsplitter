@@ -481,7 +481,7 @@ namespace hugeCSVsplitter
                     }
                 ));
                 MessageBox.Show(
-                    $"The file was successfully splitted into {partsCounter} parts. It took {sw.Elapsed}.",
+                    $"The file was successfully splitted into {partsCounter} parts.{Environment.NewLine}Time spent: {sw.Elapsed}.",
                     "Done",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
