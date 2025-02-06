@@ -1,10 +1,12 @@
 # hugeCSVsplitter
 
-A GUI application for splitting huge CSV files into several smaller ones.
+A GUI application for splitting huge CSV files into several smaller ones. Since it is a [WPF](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/)-based application, it only supports Windows platforms (*but perhaps one could also try to run it through Wine/Proton on other platforms*).
 
 ![hugeCSVsplitter main window screenshot](/img/mainwindow.png?raw=true "hugeCSVsplitter main window screenshot")
 
 There are some settings in the `.config` file (*should be deployed alongside the executable*). More details in the application help window (*press F1 to open it*).
+
+And some more details in [this article](https://decovar.dev/blog/2014/12/16/hugecsvsplitter/) (*in russian*).
 
 ## Requirements
 
