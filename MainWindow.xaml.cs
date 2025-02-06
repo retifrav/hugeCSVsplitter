@@ -346,15 +346,13 @@ namespace hugeCSVsplitter
                         header = reader.ReadLine();
                     }
                 
-                    int linesCount = 0;
                     string line = string.Empty;
                     List<string> buffer = new List<string>();
                     while ((line = reader.ReadLine()) != null)
                     {
                         buffer.Add(line);
-                        linesCount++;
                         // если буфер достиг максимума, скинуть его в файл и опустошить
-                        if (linesCount >= bufferCap)
+                        if (buffer.Count >= bufferCap)
                         {
                             if (Properties.Settings.Default.addHeader) { buffer.Insert(0, header); }
                             
@@ -373,7 +371,6 @@ namespace hugeCSVsplitter
                             );
                             
                             buffer.Clear();
-                            linesCount = 0;
                             
                             this.Dispatcher.Invoke(
                                 DispatcherPriority.Normal,
