@@ -20,6 +20,9 @@ namespace hugeCSVsplitter
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int _bufferCapMin = 50000;
+        private const int _bufferCapMax = 300000;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -281,12 +284,11 @@ namespace hugeCSVsplitter
             Stopwatch sw = Stopwatch.StartNew();
 
             int bufferCap = Properties.Settings.Default.linesPerFile;
-            if (bufferCap > 999999) // если пользователь вмочил буфер на лимон и более - урезать
+            if (bufferCap > 999999) // buffer is way too big
             {
-                bufferCap = 300000;
+                bufferCap = _bufferCapMax;
                 MessageBox.Show(
-                    string.Format("You have set a pretty damn big buffer. It will be reduced to {0}.",
-                        bufferCap.ToString()),
+                    $"You have set a pretty damn big buffer. It will be reduced to {bufferCap}.",
                     "Buffer is too damn big",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
@@ -294,14 +296,23 @@ namespace hugeCSVsplitter
             }
             else
             {
-                if (bufferCap < 1000) // если в буфер не пролезают даже кварки - расширить
+#if !DEBUG // do not limit minimum lines in Debug builds
+                if (bufferCap < 1000) // buffer is way too small
                 {
-                    bufferCap = 50000;
+                    bufferCap = _bufferCapMin;
                     MessageBox.Show(
-                        string.Format(
-                            "You have set a pretty damn small buffer. It will be increased to {0}.",
-                            bufferCap.ToString()
-                        ),
+                        $"You have set a pretty damn small buffer. It will be increased to {bufferCap}.",
+                        "Buffer is too damn small",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                }
+#endif
+                if (bufferCap < 1)
+                {
+                    bufferCap = _bufferCapMin;
+                    MessageBox.Show(
+                        $"You have set a zero/negative buffer. It will be increased to {bufferCap}.",
                         "Buffer is too damn small",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
